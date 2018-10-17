@@ -51,6 +51,12 @@ class Personnage {
     }
     // ============================================
     // Methods
+    public function __construct($force, $degats) {
+        echo "Appel du constructeur.<br/>";
+        $this->setForce($force);
+        $this->setDegats($degats);
+        $this->_experience = 1;
+    }
     public function frapper(Personnage $persoAFrapper) {
         $persoAFrapper->_degats += $this->_force;
     }
@@ -65,15 +71,8 @@ class Personnage {
 }
 
 // *** Instance de class
-$perso1 = new Personnage;
-$perso2 = new Personnage;
-
-// *** Init des attributs
-$perso1->setForce(24);
-$perso1->setExperience(15);
-
-$perso2->setForce(8);
-$perso2->setExperience(7);
+$perso1 = new Personnage(60, 0); // 60 de force, 0 dégât
+$perso2 = new Personnage(100, 10); // 100 de force, 10 dégât
 
 // *** Combat !
 $perso1->frapper($perso2);
