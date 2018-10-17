@@ -1,14 +1,23 @@
 <?php
 class Personnage {
+    //==========================================
+    // CARACTERISTIQUES OBJET - Attributs
+    //==========================================
+    
     // Attributs
-    private $_degats = 0; // Les dégâts du personnage.
-    private $_experience = 0; // L'expérience du personnage.
-    private $_force = 20; // La force du personnage (plus elle est grande, plus l'attaque est puissante).
+    private $_id;
+    private $_nom;
+    private $_force;
+    private $_degats;
+    private $_experience = 0;
+    private $_niveau;
 
     private static $_compteur = 0;
     private static $_texteADire = "Je vais te faire la peau !";
 
-    // Constantes
+    //==========================================
+    //  - Constantes
+    //==========================================
     const F_PETITE = 15;
     const F_MOYENNE = 26;
     const F_GRANDE = 42;
@@ -17,48 +26,13 @@ class Personnage {
     const DEGATS_MOYENS = 42;
     const DEGATS_SEVERES = 85;
 
-    // Getters
-    public function degats() {
-        return $this->_degats;
-    }
-    public function experience() {
-        return $this->_experience;
-    }
-    public function force() {
-        return $this->_force;
-    }
-    // Getters pour STATIC
-    public static function getCompteur() {
-        return self::$_compteur;
-    }
 
-    // Setters
-    public function setForce($force) {
-        if (in_array($force, [self::F_PETITE, self::F_MOYENNE, self::F_GRANDE])) {
-            $this->_force = $force;
-        }
-        $this->_force = $force;
-    }
-    public function setDegats($degats) {
-        if (!in_array($degats, [self::DEGATS_LEGERS, self::DEGATS_MOYENS, self::DEGATS_SEVERES])) {
-            trigger_error("Les dégats doit être un nombre entier.");
-            return;
-        }
-        $this->_degats= $degats;
-    }
-    public function setExperience($experience) {
-        if (!is_int($experience)) {
-            trigger_error("Les dégats doit être un nombre entier.");
-            return;
-        }
-        if ($experience > 120) {
-            trigger_error("Les dégats ne peuvent pas être supérieurs à 45.");
-            return;
-        }
-        $this->_experience= $experience;
-    }
+    //==========================================
+    // FONCTIONNALITES OBJET - Methods
+    //==========================================
+
+    // __construct
     // ============================================
-    // Methods
     public function __construct($forceInit, $degats) {
         echo "Appel du constructeur.<br/>";
         $this->setForce($forceInit);
@@ -66,6 +40,56 @@ class Personnage {
         $this->_experience = 1;
         self::$_compteur++;
     }
+
+    // ============================================
+    // *** GETTERS
+    // ============================================
+    public function getId() { return $this->_id;}
+    public function getNom() { return $this->_nom; }
+    public function getDegats() { return $this->_degats; }
+    public function getExperience() { return $this->_experience; }
+    public function getForce() { return $this->_force; }
+    public function niveau() { return $this->_niveau; }
+
+    // *** GETTERS POUR STATIC
+    public static function getCompteur() {return self::$_compteur; }
+
+    // ============================================
+    // *** SETTERS
+    // ============================================
+    public function setId($id) {
+        if (is_int($id) && $id > 0) {
+            $this->_id = $id;
+        }
+    }
+    public function setNom($nom) {
+        if (is_string($nom)) {
+            $this->_nom = $nom;
+        }
+    }
+    public function setForce($force) {
+        if (in_array($force, [self::F_PETITE, self::F_MOYENNE, self::F_GRANDE])) {
+            $this->_force = $force;
+        }
+    }
+    public function setDegats($degats) {
+        if (in_array($degats, [self::DEGATS_LEGERS, self::DEGATS_MOYENS, self::DEGATS_SEVERES])) {
+            $this->_degats= $degats;
+        }
+    }
+    public function setExperience($experience) {
+        if (is_int($experience) && $experience < 120) {
+            $this->_experience= $experience;
+        }
+    }
+    public function setNiveau($niveau) {
+        if (is_int($niveau) && $niveau > 0 && $niveau < 80) {
+            $this->_experience= $experience;
+        }
+    }
+    // ============================================
+    // *** ACTIONS
+    // ============================================
     public function frapper(Personnage $persoAFrapper) {
         $persoAFrapper->_degats += $this->_force;
     }
