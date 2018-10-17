@@ -98,5 +98,3 @@ echo "=====================<br/>";
 echo "Le personnage 1 a ",$perso1->force(), " de force. Et le personage 2, ", $perso2->force(), " points de force.<br/>";
 echo "Le personnage 1 a ",$perso1->experience(), " d'XP. Et le personage 2, ", $perso2->experience(), " points d'XP.<br/>";
 echo "Le personnage 1 a prit ".$perso1->degats(), " point de degats contre ",$perso2->degats(), " pour le second.<br/>";
-
-echo "test commit and push";
