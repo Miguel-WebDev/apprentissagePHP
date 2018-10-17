@@ -1,78 +1,13 @@
 <?php
-class Personnage {
-    // Attributs
-    private $_degats = 0; // Les dégâts du personnage.
-    private $_experience = 0; // L'expérience du personnage.
-    private $_force = 20; // La force du personnage (plus elle est grande, plus l'attaque est puissante).
+require_once('functions.php');
+// On enregistre la fonction en autoload pour qu'elle soit appelée 
+// dès qu'on instanciera une classe non déclarée.
+spl_autoload_register('chargerClasse');
 
-    // Getters
-    public function degats() {
-        return $this->_degats;
-    }
-    public function experience() {
-        return $this->_experience;
-    }
-    public function force() {
-        return $this->_force;
-    }
-    // Setters
-    public function setForce($force) {
-        if (!is_int($force)) {
-            trigger_error("La force d'un personnage doit être un nombre entier", E_USER_WARNING);
-            return;
-        }
-        if ($force > 100) {
-            trigger_error("La force d'un personnage ne peut dépasser 100", E_USER_WARNING);
-            return;
-        }
-        $this->_force = $force;
-    }
-    public function setDegats($degats) {
-        if (!is_int($degats)) {
-            trigger_error("Les dégats doit être un nombre entier.");
-            return;
-        }
-        if ($degats > 45) {
-            trigger_error("Les dégats ne peuvent pas être supérieurs à 45.");
-            return;
-        }
-        $this->_degats= $degats;
-    }
-    public function setExperience($experience) {
-        if (!is_int($experience)) {
-            trigger_error("Les dégats doit être un nombre entier.");
-            return;
-        }
-        if ($experience > 120) {
-            trigger_error("Les dégats ne peuvent pas être supérieurs à 45.");
-            return;
-        }
-        $this->_experience= $experience;
-    }
-    // ============================================
-    // Methods
-    public function __construct($force, $degats) {
-        echo "Appel du constructeur.<br/>";
-        $this->setForce($force);
-        $this->setDegats($degats);
-        $this->_experience = 1;
-    }
-    public function frapper(Personnage $persoAFrapper) {
-        $persoAFrapper->_degats += $this->_force;
-    }
-    public function gagnerExperience()
-    {
-        $this->_experience += 4;
-    }
-    public function afficherStats() {
-        echo "Dégats : ".$this->_degats;
-        echo "<br/>Experience : ".$this->_experience."<br/>";
-    }
-}
 
 // *** Instance de class
-$perso1 = new Personnage(60, 0); // 60 de force, 0 dégât
-$perso2 = new Personnage(100, 10); // 100 de force, 10 dégât
+$perso1 = new Personnage(Personnage::F_MOYENNE, Personnage::DEGATS_MOYENS);
+$perso2 = new Personnage(Personnage::F_PETITE, Personnage::DEGATS_LEGERS);
 
 // *** Combat !
 $perso1->frapper($perso2);
