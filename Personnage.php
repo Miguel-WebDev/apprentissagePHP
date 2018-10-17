@@ -18,14 +18,14 @@ class Personnage {
     //==========================================
     //  - Constantes
     //==========================================
-    const F_PETITE = 15;
-    const F_MOYENNE = 26;
-    const F_GRANDE = 42;
+    const F_PETITE          = 15;
+    const F_MOYENNE         = 26;
+    const F_GRANDE          = 42;
 
-    const DEGATS_LEGERS = 15;
-    const DEGATS_MOYENS = 42;
-    const DEGATS_SEVERES = 85;
-
+    const DEGATS_LEGERS     = 15;
+    const DEGATS_MOYENS     = 42;
+    const DEGATS_SEVERES    = 85;
+    const DEGATS_NULL       = 0;
 
     //==========================================
     // FONCTIONNALITES OBJET - Methods
@@ -33,14 +33,19 @@ class Personnage {
 
     // __construct
     // ============================================
-    public function __construct($forceInit, $degats) {
-        echo "Appel du constructeur.<br/>";
-        $this->setForce($forceInit);
-        $this->setDegats($degats);
-        $this->_experience = 1;
-        self::$_compteur++;
+    public function __construct(array $donnees) {
+        $this->hydrate($donnees);
     }
-
+    // Hydrater l'objet = Initialiser les valeurs des attributs
+    private function hydrate(array $donnees) {
+        foreach ($donnees as $key => $value) {
+            $method = 'set'.ucfirst($key);
+            // Si le setter correspondant existe.
+            if (method_exists($this, $method)) {
+                $this->$method($value);
+            }
+        }
+    }
     // ============================================
     // *** GETTERS
     // ============================================
@@ -58,34 +63,22 @@ class Personnage {
     // *** SETTERS
     // ============================================
     public function setId($id) {
-        if (is_int($id) && $id > 0) {
-            $this->_id = $id;
-        }
+        if (is_int($id) && $id > 0) { $this->_id = $id; }
     }
     public function setNom($nom) {
-        if (is_string($nom)) {
-            $this->_nom = $nom;
-        }
+        if (is_string($nom)) { $this->_nom = $nom; }
     }
     public function setForce($force) {
-        if (in_array($force, [self::F_PETITE, self::F_MOYENNE, self::F_GRANDE])) {
-            $this->_force = $force;
-        }
+        if (is_int($force) && $force > 0) { $this->_force = $force; }
     }
     public function setDegats($degats) {
-        if (in_array($degats, [self::DEGATS_LEGERS, self::DEGATS_MOYENS, self::DEGATS_SEVERES])) {
-            $this->_degats= $degats;
-        }
+        if (is_int($degats) && $degats > 0) { $this->_degats = $degats; }
     }
     public function setExperience($experience) {
-        if (is_int($experience) && $experience < 120) {
-            $this->_experience= $experience;
-        }
+        if (is_int($experience) && $experience < 120) { $this->_experience= $experience; }
     }
     public function setNiveau($niveau) {
-        if (is_int($niveau) && $niveau > 0 && $niveau < 80) {
-            $this->_experience= $experience;
-        }
+        if (is_int($niveau) && $niveau > 0 && $niveau < 80) { $this->_niveau= $niveau; }
     }
     // ============================================
     // *** ACTIONS
@@ -93,16 +86,14 @@ class Personnage {
     public function frapper(Personnage $persoAFrapper) {
         $persoAFrapper->_degats += $this->_force;
     }
-    public function gagnerExperience()
-    {
-        $this->_experience += 4;
-    }
+    public function gagnerExperience() { $this->_experience += 4; }
     public function afficherStats() {
-        echo "Dégats : ".$this->_degats;
-        echo "<br/>Experience : ".$this->_experience."<br/>";
+        echo "Nom : ".$this->getNom()."<br/>";
+        echo "Dégats : ".$this->getDegats()."<br/>";
+        echo "Force : ".$this->getForce()."<br/>";
+        echo "Experience : ".$this->getExperience()."<br/>";
+        echo "Niveau : ".$this->niveau()."<br/>";
     }
 
-    public static function parler() {
-        echo self::$_texteADire;
-    }
+    public static function parler() { echo self::$_texteADire; }
 } ?>
