@@ -5,6 +5,9 @@ class Personnage {
     private $_experience = 0; // L'expérience du personnage.
     private $_force = 20; // La force du personnage (plus elle est grande, plus l'attaque est puissante).
 
+    private static $_compteur = 0;
+    private static $_texteADire = "Je vais te faire la peau !";
+
     // Constantes
     const F_PETITE = 15;
     const F_MOYENNE = 26;
@@ -24,6 +27,11 @@ class Personnage {
     public function force() {
         return $this->_force;
     }
+    // Getters pour STATIC
+    public static function getCompteur() {
+        return self::$_compteur;
+    }
+
     // Setters
     public function setForce($force) {
         if (in_array($force, [self::F_PETITE, self::F_MOYENNE, self::F_GRANDE])) {
@@ -56,6 +64,7 @@ class Personnage {
         $this->setForce($forceInit);
         $this->setDegats($degats);
         $this->_experience = 1;
+        self::$_compteur++;
     }
     public function frapper(Personnage $persoAFrapper) {
         $persoAFrapper->_degats += $this->_force;
@@ -67,5 +76,9 @@ class Personnage {
     public function afficherStats() {
         echo "Dégats : ".$this->_degats;
         echo "<br/>Experience : ".$this->_experience."<br/>";
+    }
+
+    public static function parler() {
+        echo self::$_texteADire;
     }
 } ?>
