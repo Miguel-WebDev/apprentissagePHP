@@ -28,6 +28,18 @@
         use A\B\C\D\E\F as nsF;
         // Se transforme en A\B\C\D\E\F\getNamespace().
         nsF\getNamespace();
+
+        use NomTresLongExpresARallongePourAlias as TresLong;
+        TresLong\getNamespace();
+        use NomTresLongExpresARallongePourAlias\MaClasse;
+        $a = new MaClasse;
+        $a->hello();
+
+        // AS pour changer nom de la class
+        use NomTresLongExpresARallongePourAlias\MaClasse as Hello;
+        $b = new Hello; // Se transforme en $b = new NOMDENAMESPACE\MaClasse.
+        $b->Hello();
+
     }
 
 ?>
